@@ -1,1 +1,1 @@
-# Coursework_3_semester
+Разработка ПП, 3 семестр
