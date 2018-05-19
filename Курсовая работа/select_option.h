@@ -22,6 +22,7 @@ signals:
 
 public slots:
     void click_ok();
+    void value(int);
 
 private:
     Ui::Select_Option *ui;

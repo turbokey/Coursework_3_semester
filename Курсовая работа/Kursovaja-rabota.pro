@@ -25,20 +25,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    field.cpp \
+    scene.cpp \
     item.cpp \
     dialog.cpp \
-    select_option.cpp
+    select_option.cpp \
+    gameover.cpp
 
 HEADERS  += mainwindow.h \
-    field.h \
+    scene.h \
     item.h \
     dialog.h \
-    select_option.h
+    select_option.h \
+    gameover.h
 
 FORMS    += mainwindow.ui \
     dialog.ui \
-    select_option.ui
+    select_option.ui \
+    gameover.ui
 
 RESOURCES += \
     res.qrc

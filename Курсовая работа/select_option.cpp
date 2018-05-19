@@ -9,34 +9,44 @@ Select_Option::Select_Option(QWidget *parent) :
 
     ui->setupUi(this);
     setWindowTitle(tr("Настройки"));
+    setWindowFlags(Qt::Dialog|Qt::MSWindowsFixedSizeDialogHint);
 
     connect(ui->pushButton_OK, SIGNAL(clicked()), SLOT(click_ok()));
     connect(ui->pushButton_cancel, SIGNAL(clicked()), SLOT(close()));
+    connect(ui->slider_row,SIGNAL(valueChanged(int)),SLOT(value(int)));
+    connect(ui->slider_col,SIGNAL(valueChanged(int)),SLOT(value(int)));
+    connect(ui->slider_mine,SIGNAL(valueChanged(int)),SLOT(value(int)));
 
-    QIntValidator * val1 = new QIntValidator(1, 20, this);
-    ui->lineEdit_row->setValidator(val1);
-    ui->lineEdit_col->setValidator(val1);
+    ui->lineEdit_row->setStyleSheet("QLineEdit {background-color: rgba(0, 0, 0, 0);}");
+    ui->lineEdit_col->setStyleSheet("QLineEdit {background-color: rgba(0, 0, 0, 0);}");
+    ui->lineEdit_mine->setStyleSheet("QLineEdit {background-color: rgba(0, 0, 0, 0);}");
+    ui->lineEdit->setStyleSheet("QLineEdit {background-color: rgba(0, 0, 0, 0);}");
 
-    QIntValidator * val2 = new QIntValidator(1, 99, this);
-    ui->lineEdit_mine->setValidator(val2);
-
+    ui->row->setText(QString::number(ui->slider_row->value()));
+    ui->col->setText(QString::number(ui->slider_col->value()));
+    ui->mine->setText(QString::number(ui->slider_mine->value()));
 }
 
 Select_Option::~Select_Option()
 {
-
     delete ui;
-
 }
 void Select_Option::click_ok()
 {
 
-    int row = ui->lineEdit_row->text().toInt();
-    int col = ui->lineEdit_col->text().toInt();
-    int mine = ui->lineEdit_mine->text().toInt();
+    int row = ui->slider_row->value();
+    int col = ui->slider_col->value();
+    int mine = ui->slider_mine->value();
+    bool infinity = ui->infinity->isChecked();
 
     if(mine>row*col)
         return;
     emit sendInformation(row, col, mine);
     close();
+}
+void Select_Option::value(int k)
+{
+    ui->row->setText(QString::number(ui->slider_row->value()));
+    ui->col->setText(QString::number(ui->slider_col->value()));
+    ui->mine->setText(QString::number(ui->slider_mine->value()));
 }

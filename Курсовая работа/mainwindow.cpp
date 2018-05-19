@@ -8,17 +8,13 @@
 #include <time.h>
 #include <stdlib.h>
 #include "item.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
     create_menu();
     create_field();
-    //tmr = new QTimer();
-    //tmr->setInterval(1000);
-    //connect(tmr, SIGNAL(timeout()),this,SLOT(updateTime()));
-    //tmr->start();
-    //ui->setupUi(this);
 }
 
 void MainWindow::create_menu()
@@ -53,19 +49,19 @@ void MainWindow::create_field()
     QPixmap pxmp = QPixmap(":/resources/notopen.png");
     int w = pxmp.width();
     int h = pxmp.height();
-    int r = Field::rows;
-    int c = Field::columns;
-    int m = Field::mines;
+    int r = Scene::rows;
+    int c = Scene::columns;
+    int m = Scene::mines;
 
-    qDebug() << r << " " << c;
-
-    delete field;
-    field = new Field(this);
-    field->setSceneRect(0,0,w*c,h*r);
+    delete scene;
+    scene = new Scene(this);
+    qDebug() << w*c << h*r;
+    scene->setSceneRect(0,0,w*c,h*r);
     resize(w*c+20,h*r+40);
+    this->setFixedSize(w*c+20,h*r+40);
 
     view = new QGraphicsView(this);
-    view->setScene(field);
+    view->setScene(scene);
     view->setMinimumSize(w*c+2,h*r+2);
 
     QWidget *wid = new QWidget(this);
@@ -81,7 +77,7 @@ void MainWindow::create_field()
         {
             tmp.push_back(0);
         }
-        field->getAllItems().push_back(tmp);
+        scene->getAllItems().push_back(tmp);
     }
 
     for (int i=0; i<r; i++)
@@ -90,10 +86,10 @@ void MainWindow::create_field()
         {
             Item *item = new Item;
             item->setPixmap(pxmp);
-            field->addItem(item);
+            scene->addItem(item);
             item->setPos(j*w,i*h);
             item->setRowCol(i,j);
-            field->getAllItems()[i][j] = item;
+            scene->getAllItems()[i][j] = item;
         }
     }
 
@@ -102,12 +98,12 @@ void MainWindow::create_field()
     {
         int rand_row = rand()%r;
         int rand_column = rand()%c;
-        Item *item = field->getAllItems()[rand_row][rand_column];
+        Item *item = scene->getAllItems()[rand_row][rand_column];
         if (!item->Ismine())
         {
             item->setMine();
             m--;
-            field->calcMinesAround(item);
+            scene->calcMinesAround(item);
         }
     } while(m > 0);
 
@@ -131,17 +127,13 @@ void MainWindow::about_clicked()
 
 void MainWindow::getInformation(int rows, int columns, int mines)
 {
-    Field::rows = rows;
-    Field::columns = columns;
-    Field::mines = mines;
+    Scene::rows = rows;
+    Scene::columns = columns;
+    Scene::mines = mines;
+    create_field();
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
-}
 
-//void MainWindow::updateTime()
-//{
-    //qDebug() << "Таймер сработал";
-//}
+}

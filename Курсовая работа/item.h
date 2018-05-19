@@ -8,7 +8,7 @@ class Item: public QGraphicsPixmapItem
 {
 
 public:
-    friend class Field;
+    friend class Scene;
     Item(QGraphicsItem * parent = 0)
         :QGraphicsPixmapItem(parent),isMine(0),mineAround(0),
           Leftclicked(false),Rightclicked(0),LeftRightC(false)

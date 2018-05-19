@@ -1,11 +1,16 @@
 #include "item.h"
-#include "field.h"
+#include "scene.h"
+#include <QDebug>
 
 int Item::mine_found = 0;
 
 void Item::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    Field * field = (Field *)this->scene();
+    Scene * scene = (Scene *)this->scene();
+    if (scene->isOver())
+        return;
+    f_ma = 0;
+
     if(this->Leftclicked && ((event->buttons() & Qt::LeftButton
                               && event->buttons() & Qt::RightButton) ||
                              (event->buttons() & Qt::RightButton &&
@@ -16,11 +21,11 @@ void Item::mousePressEvent(QGraphicsSceneMouseEvent *event)
         {
             int x = row + point[i].x();
             int y = col + point[i].y();
-            if(x>=Field::rows || x<0)
+            if(x>=Scene::rows || x<0)
                 continue;
-            if(y>=Field::columns || y<0)
+            if(y>=Scene::columns || y<0)
                 continue;
-            Item *item = field->getAllItems()[x][y];
+            Item *item = scene->getAllItems()[x][y];
             if(item->Leftclicked)
                 continue;
             if(item->Rightclicked > 0)
@@ -28,7 +33,7 @@ void Item::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 f_ma++;
                 continue;
             }
-            item->setPixmap(QPixmap(""));
+            item->setPixmap(QPixmap(":/resources/0.png"));
         }
     }
     if (event->button() & Qt::LeftButton)
@@ -37,9 +42,15 @@ void Item::mousePressEvent(QGraphicsSceneMouseEvent *event)
             return;
         Leftclicked = true;
         setImage(this);
-
+        scene->decreace_number();
+        if(scene->isOver())
+            return;
+        if(this->isMine)
+        {
+            scene->Lose();
+        }
         if(this->mineAround == 0)
-            field->show_blank(this);
+            scene->show_blank(this);
     }
     if (event->button() & Qt::RightButton)
     {
@@ -71,7 +82,7 @@ void Item::mousePressEvent(QGraphicsSceneMouseEvent *event)
             else if (Rightclicked == 2)
             {
                 this->setPixmap(QPixmap(":/resources/notopen.png"));
-                Rightclicked == 0;
+                Rightclicked = 0;
             }
         }
     }
@@ -79,7 +90,9 @@ void Item::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void Item::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    Field *field = (Field*) this->scene();
+    Scene *scene = (Scene*) this->scene();
+    if(scene->isOver())
+        return;
     if (this->Leftclicked && !((event->buttons() & Qt::LeftButton
                                 && event->buttons() & Qt::RightButton) ||
                                (event->buttons() & Qt::RightButton &&
@@ -90,11 +103,11 @@ void Item::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         {
             int x = row + point[i].x();
             int y = col + point[i].y();
-            if(x>=Field::rows || x<0)
+            if(x>=Scene::rows || x<0)
                 continue;
-            if(y>=Field::columns || y<0)
+            if(y>=Scene::columns || y<0)
                 continue;
-            Item *item = field->getAllItems()[x][y];
+            Item *item = scene->getAllItems()[x][y];
             if(item->Leftclicked)
                 continue;
             if(item->Rightclicked > 0)
@@ -105,15 +118,24 @@ void Item::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 if (item->Ismine())
                 {
                     item->setPixmap(QPixmap(":/resources/bombhere.png"));
+                    scene->Lose();
                 }
+                //qDebug() << "До проверки: " << (scene->isOver);
+                if(scene->isOver())
+                    return;
                 item->setImage(item);
+                scene->decreace_number();
+
                 if(item->mineAround == 0)
                 {
-                    field->show_blank(item);
+                    scene->show_blank(item);
                 }
             }
             else
+            {
                 item->setPixmap(QPixmap(":/resources/notopen.png"));
+            }
+
         }
     }
 }
@@ -126,9 +148,9 @@ void Item::setImage(Item *item)
     {
         switch (item->mineAround)
         {
-            case 0:
-                item->setPixmap(QPixmap(":/resources/0.png"));
-                break;
+        case 0:
+            item->setPixmap(QPixmap(":/resources/0.png"));
+            break;
         case 1:
             item->setPixmap(QPixmap(":/resources/1.png"));
             break;
