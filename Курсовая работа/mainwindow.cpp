@@ -13,6 +13,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
+    connect(&m_timer, SIGNAL(timeout()), this, SLOT(timerTick()));
+    m_timer.setInterval(1000);
     create_menu();
     create_field();
 }
@@ -46,6 +48,9 @@ void MainWindow::create_menu()
 
 void MainWindow::create_field()
 {
+    Item::mines_found = 0;
+    timeR = 60;
+
     QPixmap pxmp = QPixmap(":/resources/notopen.png");
     int w = pxmp.width();
     int h = pxmp.height();
@@ -53,26 +58,44 @@ void MainWindow::create_field()
     int c = Scene::columns;
     int m = Scene::mines;
 
-    delete scene;
     scene = new Scene(this);
-    qDebug() << w*c << h*r;
     scene->setSceneRect(0,0,w*c,h*r);
-    resize(w*c+20,h*r+40);
-    this->setFixedSize(w*c+20,h*r+40);
+    scene->setGameOver(true);
+    resize(w*c+20,h*r+80);
+    this->setFixedSize(w*c+20,h*r+80);
 
     view = new QGraphicsView(this);
     view->setScene(scene);
     view->setMinimumSize(w*c+2,h*r+2);
+    view->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
 
     QWidget *wid = new QWidget(this);
     setCentralWidget(wid);
     QVBoxLayout *vl = new QVBoxLayout;
+    vl->setAlignment(Qt::AlignHCenter);
+    timer->setStyleSheet("QLabel { background-color : transparent; color : red; }");
+    timer->setAlignment(Qt::AlignHCenter);
+    timer->setText(tr("01:00"));
+    timer->setFont(QFont("Arial",20,QFont::Bold));
+    timer->setVisible(false);
+    timer->setVisible(false);
+
+    QHBoxLayout *hl = new QHBoxLayout;
+    hl->addWidget(start);
+    start->setFont(QFont("Arial",17,QFont::Normal));
+    start->setText(tr("Начать игру"));
+    start->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+    start->setVisible(true);
+    connect(start,SIGNAL(clicked()),SLOT(start_clicked()));
+
+    vl->addLayout(hl);
+    vl->addWidget(timer);
     vl->addWidget(view);
     wid->setLayout(vl);
 
     for (int i=0; i<r; i++)
     {
-        vector<Item *> tmp;
+        QVector<Item *> tmp;
         for (int j=0; j<c; j++)
         {
             tmp.push_back(0);
@@ -111,7 +134,6 @@ void MainWindow::create_field()
 
 void MainWindow::new_game_clicked()
 {
-    Item::mine_found = 0;
     create_field();
 }
 
@@ -122,7 +144,7 @@ void MainWindow::options_clicked()
 
 void MainWindow::about_clicked()
 {
-    dialog.show();
+    dia.show();
 }
 
 void MainWindow::getInformation(int rows, int columns, int mines)
@@ -135,5 +157,31 @@ void MainWindow::getInformation(int rows, int columns, int mines)
 
 MainWindow::~MainWindow()
 {
-
+    delete view;
+    delete scene;
+}
+void MainWindow::enableTimer()
+{
+    m_timer.start();
+}
+void MainWindow::timerTick()
+{
+    timeR--;
+    timer->setText("00:" + QString::number(timeR));
+    if (timeR == 0)
+    {
+        victory.show();
+        m_timer.stop();
+        scene->setGameOver(true);
+    }
+    else if(scene->isOver()) {
+        m_timer.stop();
+    }
+}
+void MainWindow::start_clicked()
+{
+    start->setVisible(false);
+    timer->setVisible(true);
+    scene->setGameOver(false);
+    m_timer.start();
 }

@@ -16,5 +16,7 @@
         <file>bombhere.png</file>
         <file>flag.png</file>
         <file>question.png</file>
+        <file>lose.png</file>
+        <file>victory.png</file>
     </qresource>
 </RCC>

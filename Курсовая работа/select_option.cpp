@@ -20,7 +20,6 @@ Select_Option::Select_Option(QWidget *parent) :
     ui->lineEdit_row->setStyleSheet("QLineEdit {background-color: rgba(0, 0, 0, 0);}");
     ui->lineEdit_col->setStyleSheet("QLineEdit {background-color: rgba(0, 0, 0, 0);}");
     ui->lineEdit_mine->setStyleSheet("QLineEdit {background-color: rgba(0, 0, 0, 0);}");
-    ui->lineEdit->setStyleSheet("QLineEdit {background-color: rgba(0, 0, 0, 0);}");
 
     ui->row->setText(QString::number(ui->slider_row->value()));
     ui->col->setText(QString::number(ui->slider_col->value()));
@@ -37,14 +36,13 @@ void Select_Option::click_ok()
     int row = ui->slider_row->value();
     int col = ui->slider_col->value();
     int mine = ui->slider_mine->value();
-    bool infinity = ui->infinity->isChecked();
 
     if(mine>row*col)
         return;
     emit sendInformation(row, col, mine);
     close();
 }
-void Select_Option::value(int k)
+void Select_Option::value(int)
 {
     ui->row->setText(QString::number(ui->slider_row->value()));
     ui->col->setText(QString::number(ui->slider_col->value()));

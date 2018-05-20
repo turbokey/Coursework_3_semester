@@ -27,21 +27,24 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     scene.cpp \
     item.cpp \
-    dialog.cpp \
     select_option.cpp \
-    gameover.cpp
+    gameover.cpp \
+    losewindia.cpp \
+    victory.cpp
 
 HEADERS  += mainwindow.h \
     scene.h \
     item.h \
-    dialog.h \
     select_option.h \
-    gameover.h
+    gameover.h \
+    losewindia.h \
+    victory.h
 
 FORMS    += mainwindow.ui \
-    dialog.ui \
     select_option.ui \
-    gameover.ui
+    gameover.ui \
+    losewindia.ui \
+    victory.ui
 
 RESOURCES += \
     res.qrc

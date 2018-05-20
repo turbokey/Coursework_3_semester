@@ -5,9 +5,9 @@
 #include <QMessageBox>
 #include <QDebug>
 
-int Scene::rows = 9;
-int Scene::columns = 9;
-int Scene::mines = 10;
+int Scene::rows = 4;
+int Scene::columns = 4;
+int Scene::mines = 1;
 
 const QPoint point[8] = {
     QPoint(-1,-1),
@@ -39,7 +39,6 @@ void Scene::show_blank(Item *item)
 {
     for(int i=0; i<8; i++)
     {
-
         int x = item->row + point[i].x();
         int y = item->col + point[i].y();
         if(x>(rows-1) || x<0) continue;
@@ -49,7 +48,6 @@ void Scene::show_blank(Item *item)
             continue;
         tmp->Leftclicked = true;
         tmp->setImage(tmp);
-        decreace_number();
         if(isOver())
             return;
         if(tmp->mineAround == 0)
@@ -57,26 +55,95 @@ void Scene::show_blank(Item *item)
     }
 }
 
-void Scene::decreace_number()
-{
-    Number_nomine--;
-    qDebug() << Number_nomine;
-    if(Number_nomine == 0)
-    {
-        for (int i = 0; i < rows; i++)
-            for(int j = 0; j < columns; j++)
-            {
-                Item *item = this->allItems[i][j];
-                if (!item->Leftclicked && (item->Rightclicked == 0 || item->Rightclicked == 2))
-                    item->setPixmap(QPixmap(":/resources/flag.png"));
-            }
-        MainWindow *mw = (MainWindow*)this->parent();
-        QMessageBox::information(mw,tr("Победа"),tr("Поле успешно разминировано"));
-        game_over = true;
-    }
-}
+
 void Scene::Lose()
 {
     game_over = true;
     lose.show();
+}
+void Scene::setGameOver(bool b)
+{
+    game_over = b;
+}
+void Scene::checkLowering()
+{
+    for (int i = 0; i < columns; i++)
+    {
+        Item *item = allItems[rows-1][i];
+        if((item->Leftclicked) || (item->Rightclicked == 1 && item->isMine))
+            continue;
+        return;
+    }
+    deleteRow();
+    //checkLowering();
+
+}
+void Scene::deleteRow()
+{
+    for (int a = 0; a < rows; a++)
+        for (int b = 0; b < columns; b++)
+            qDebug() << allItems.value(a).value(b)->isMine;
+    for (int i = rows-1; i > 0; i--)
+        for (int j = 0; j < columns; j++)
+        {
+           allItems[i][j]=allItems[i-1][j];
+           updateItemImg(allItems[i][j]);
+        }
+    qDebug() <<"             ";
+    for (int a = 0; a < rows; a++)
+        for (int b = 0; b < columns; b++)
+            qDebug() << allItems.value(a).value(b)->isMine;
+}
+
+void Scene::updateItemImg(Item* item)
+{
+    if (item->Leftclicked == false)
+    {
+        item->setPixmap(QPixmap(":/resources/notopen.png"));
+        if (item->Rightclicked != 0)
+        {
+            switch (item->Rightclicked)
+            {
+            case 1:
+                item->setPixmap(QPixmap(":/resources/flag.png"));
+                break;
+            case 2:
+                item->setPixmap(QPixmap(":/resources/question.png"));
+                break;
+            }
+        }
+    }
+    else
+    {
+        switch (item->mineAround)
+        {
+        case 0:
+            item->setPixmap(QPixmap(":/resources/0.png"));
+            break;
+        case 1:
+            item->setPixmap(QPixmap(":/resources/1.png"));
+            break;
+        case 2:
+            item->setPixmap(QPixmap(":/resources/2.png"));
+            break;
+        case 3:
+            item->setPixmap(QPixmap(":/resources/3.png"));
+            break;
+        case 4:
+            item->setPixmap(QPixmap(":/resources/4.png"));
+            break;
+        case 5:
+            item->setPixmap(QPixmap(":/resources/5.png"));
+            break;
+        case 6:
+            item->setPixmap(QPixmap(":/resources/6.png"));
+            break;
+        case 7:
+            item->setPixmap(QPixmap(":/resources/7.png"));
+            break;
+        case 8:
+            item->setPixmap(QPixmap(":/resources/8.png"));
+            break;
+        }
+    }
 }

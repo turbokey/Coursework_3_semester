@@ -1,5 +1,5 @@
-#ifndef DIALOG_H
-#define DIALOG_H
+#ifndef LOSEWINDIA_H
+#define LOSEWINDIA_H
 
 #include <QDialog>
 
@@ -15,4 +15,4 @@ public:
 private:
     Ui::LoseWinDia *ui;
 };
-#endif // DIALOG_H
+#endif // LOSEWINDIA_H

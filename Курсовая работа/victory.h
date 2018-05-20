@@ -1,22 +1,22 @@
-#ifndef GAMEOVER_H
-#define GAMEOVER_H
+#ifndef VICTORY_H
+#define VICTORY_H
 
 #include <QDialog>
 
 namespace Ui
 {
-    class Gameover;
+    class Victory;
 }
-class Gameover : public QDialog
+class Victory : public QDialog
 {
     Q_OBJECT
 public:
-    explicit Gameover(QWidget *parent = 0);
-    ~Gameover();
+    explicit Victory(QWidget *parent = 0);
+    ~Victory();
 signals:
     void windowShowed();
 private:
-    Ui::Gameover *ui;
+    Ui::Victory *ui;
 private slots:
     void onWindowShowed();
 protected:
@@ -26,4 +26,4 @@ protected:
             emit windowShowed();
         }
 };
-#endif // GAMEOVER_H
+#endif // VICTORY_H

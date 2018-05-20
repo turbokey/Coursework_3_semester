@@ -13,7 +13,6 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
@@ -33,8 +32,6 @@ public:
     QSlider *slider_row;
     QSlider *slider_col;
     QSlider *slider_mine;
-    QLineEdit *lineEdit;
-    QCheckBox *infinity;
     QLineEdit *row;
     QLineEdit *col;
     QLineEdit *mine;
@@ -43,7 +40,7 @@ public:
     {
         if (Select_Option->objectName().isEmpty())
             Select_Option->setObjectName(QStringLiteral("Select_Option"));
-        Select_Option->resize(435, 211);
+        Select_Option->resize(435, 185);
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -51,13 +48,13 @@ public:
         Select_Option->setSizePolicy(sizePolicy);
         pushButton_OK = new QPushButton(Select_Option);
         pushButton_OK->setObjectName(QStringLiteral("pushButton_OK"));
-        pushButton_OK->setGeometry(QRect(350, 180, 75, 23));
+        pushButton_OK->setGeometry(QRect(350, 150, 75, 23));
         QFont font;
         font.setPointSize(10);
         pushButton_OK->setFont(font);
         pushButton_cancel = new QPushButton(Select_Option);
         pushButton_cancel->setObjectName(QStringLiteral("pushButton_cancel"));
-        pushButton_cancel->setGeometry(QRect(260, 180, 75, 23));
+        pushButton_cancel->setGeometry(QRect(260, 150, 75, 23));
         pushButton_cancel->setFont(font);
         lineEdit_row = new QLineEdit(Select_Option);
         lineEdit_row->setObjectName(QStringLiteral("lineEdit_row"));
@@ -104,21 +101,6 @@ public:
         slider_mine->setValue(10);
         slider_mine->setOrientation(Qt::Horizontal);
         slider_mine->setInvertedControls(false);
-        lineEdit = new QLineEdit(Select_Option);
-        lineEdit->setObjectName(QStringLiteral("lineEdit"));
-        lineEdit->setEnabled(true);
-        lineEdit->setGeometry(QRect(10, 140, 191, 31));
-        lineEdit->setFont(font1);
-        lineEdit->setCursor(QCursor(Qt::IBeamCursor));
-        lineEdit->setFocusPolicy(Qt::StrongFocus);
-        lineEdit->setAutoFillBackground(false);
-        lineEdit->setFrame(false);
-        lineEdit->setReadOnly(true);
-        infinity = new QCheckBox(Select_Option);
-        infinity->setObjectName(QStringLiteral("infinity"));
-        infinity->setGeometry(QRect(210, 140, 171, 31));
-        infinity->setStyleSheet(QStringLiteral(""));
-        infinity->setChecked(true);
         row = new QLineEdit(Select_Option);
         row->setObjectName(QStringLiteral("row"));
         row->setGeometry(QRect(390, 20, 31, 31));
@@ -152,8 +134,6 @@ public:
         lineEdit_row->setPlaceholderText(QString());
         lineEdit_col->setText(QApplication::translate("Select_Option", "\320\232\320\276\320\273\320\270\321\207\320\265\321\201\321\202\320\262\320\276 \321\201\321\202\320\276\320\273\320\261\321\206\320\276\320\262", Q_NULLPTR));
         lineEdit_mine->setText(QApplication::translate("Select_Option", "\320\232\320\276\320\273\320\270\321\207\320\265\321\201\321\202\320\262\320\276 \320\274\320\270\320\275", Q_NULLPTR));
-        lineEdit->setText(QApplication::translate("Select_Option", "\320\221\320\265\321\201\320\272\320\276\320\275\320\265\321\207\320\275\320\276\320\265 \320\277\320\276\320\273\320\265", Q_NULLPTR));
-        infinity->setText(QString());
         row->setText(QString());
     } // retranslateUi
 

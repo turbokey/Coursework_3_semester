@@ -3,6 +3,7 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QTime>
+#include "mainwindow.h"
 
 class Item: public QGraphicsPixmapItem
 {
@@ -32,7 +33,7 @@ public:
     {
         return isMine;
     }
-    static int mine_found;
+    static int mines_found;
 private:
     int row;
     int col;
@@ -44,6 +45,4 @@ private:
     bool LeftRightC;
     int f_ma;
 };
-
-
 #endif // ITEM_H

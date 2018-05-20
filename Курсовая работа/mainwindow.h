@@ -3,9 +3,11 @@
 
 #include <QMainWindow>
 #include <QGraphicsView>
-#include "dialog.h"
+#include "losewindia.h"
 #include "scene.h"
 #include "select_option.h"
+#include <QLabel>
+#include <QPushButton>
 
 class MainWindow : public QMainWindow
 {
@@ -14,18 +16,27 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    QLabel *timer = new QLabel;
+    QPushButton *start = new QPushButton;
     void create_menu();
     void create_field();
+    void enableTimer();
 private:
     Select_Option selec;
-    Dialog dialog;
+    LoseWinDia dia;
     Scene *scene;
     QGraphicsView *view;
+    QTimer m_timer;
+    Victory victory;
+    int timeR = 60;
 public slots:
     void new_game_clicked();
     void options_clicked();
     void about_clicked();
     void getInformation(int rows,int columns,int mines);
+private slots:
+    void timerTick();
+    void start_clicked();
 };
 
 #endif // MAINWINDOW_H

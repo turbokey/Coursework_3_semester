@@ -2,7 +2,7 @@
 #include "scene.h"
 #include <QDebug>
 
-int Item::mine_found = 0;
+int Item::mines_found = 0;
 
 void Item::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -42,7 +42,6 @@ void Item::mousePressEvent(QGraphicsSceneMouseEvent *event)
             return;
         Leftclicked = true;
         setImage(this);
-        scene->decreace_number();
         if(scene->isOver())
             return;
         if(this->isMine)
@@ -72,11 +71,21 @@ void Item::mousePressEvent(QGraphicsSceneMouseEvent *event)
             if(Rightclicked == 0)
             {
                 this->setPixmap(QPixmap(":/resources/flag.png"));
+                Item *item = scene->getAllItems()[row][col];
+                if (item->Ismine())
+                {
+                    mines_found++;
+                }
                 Rightclicked++;
             }
             else if (Rightclicked == 1)
             {
                 this->setPixmap(QPixmap(":/resources/question.png"));
+                Item *item = scene->getAllItems()[row][col];
+                if (item->Ismine())
+                {
+                    mines_found--;
+                }
                 Rightclicked++;
             }
             else if (Rightclicked == 2)
@@ -120,11 +129,9 @@ void Item::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                     item->setPixmap(QPixmap(":/resources/bombhere.png"));
                     scene->Lose();
                 }
-                //qDebug() << "До проверки: " << (scene->isOver);
                 if(scene->isOver())
                     return;
                 item->setImage(item);
-                scene->decreace_number();
 
                 if(item->mineAround == 0)
                 {
@@ -138,6 +145,7 @@ void Item::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
         }
     }
+    scene->checkLowering();
 }
 
 void Item::setImage(Item *item)
