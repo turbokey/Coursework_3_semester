@@ -9,6 +9,11 @@
 #include <stdlib.h>
 #include "item.h"
 #include <QDebug>
+#include <QFile>
+#include <QMessageBox>
+
+const int hei = 299;
+int r_offset = 0;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -26,9 +31,11 @@ void MainWindow::create_menu()
 
     QMenu *game_menu = new QMenu(tr("Игра"),this);
     QAction *new_game = new QAction(tr("Новая игра"),this);
+    QAction *record = new QAction(tr("Рекорд"),this);
     QAction *options = new QAction(tr("Опции"), this);
     QAction *exit = new QAction(tr("Выход"), this);
     game_menu->addAction(new_game);
+    game_menu->addAction(record);
     game_menu->addAction(options);
     game_menu->addAction(exit);
 
@@ -40,6 +47,7 @@ void MainWindow::create_menu()
     menuBar()->addMenu(help_menu);
 
     connect(new_game, SIGNAL(triggered()),SLOT(new_game_clicked()));
+    connect(record, SIGNAL(triggered()),SLOT(record_clicked()));
     connect(options, SIGNAL(triggered()),SLOT(options_clicked()));
     connect(exit, SIGNAL(triggered()),SLOT(close()));
     connect(about, SIGNAL(triggered()),SLOT(about_clicked()));
@@ -49,7 +57,9 @@ void MainWindow::create_menu()
 void MainWindow::create_field()
 {
     Item::mines_found = 0;
+    Item::score = 0;
     timeR = 60;
+    r_offset = 0;
 
     QPixmap pxmp = QPixmap(":/resources/notopen.png");
     int w = pxmp.width();
@@ -63,6 +73,7 @@ void MainWindow::create_field()
     scene->setGameOver(true);
     resize(w*c+20,h*r+80);
     this->setFixedSize(w*c+20,h*r+80);
+    connect(scene, SIGNAL(delRow(int)), this, SLOT(getDeleteRow(int)));
 
     view = new QGraphicsView(this);
     view->setScene(scene);
@@ -93,7 +104,7 @@ void MainWindow::create_field()
     vl->addWidget(view);
     wid->setLayout(vl);
 
-    for (int i=0; i<r; i++)
+    for (int i=0; i<hei; i++)
     {
         QVector<Item *> tmp;
         for (int j=0; j<c; j++)
@@ -103,38 +114,67 @@ void MainWindow::create_field()
         scene->getAllItems().push_back(tmp);
     }
 
-    for (int i=0; i<r; i++)
+    for (int i=hei - 1; i>=0; i--)
     {
         for (int j=0; j<c; j++)
         {
             Item *item = new Item;
             item->setPixmap(pxmp);
             scene->addItem(item);
-            item->setPos(j*w,i*h);
+            item->setPos(j*w,(i - (hei - r))*h);
             item->setRowCol(i,j);
             scene->getAllItems()[i][j] = item;
         }
     }
 
     srand(time(0));
-    do
+    for (int i = hei-1-r ; i >= 0; i-=r)
     {
-        int rand_row = rand()%r;
-        int rand_column = rand()%c;
-        Item *item = scene->getAllItems()[rand_row][rand_column];
-        if (!item->Ismine())
+        int m_c = m;
+        do
         {
-            item->setMine();
-            m--;
-            scene->calcMinesAround(item);
-        }
-    } while(m > 0);
-
+            int rand_row = i + rand()%r;
+            int rand_column = rand()%c;
+            Item *item = scene->getAllItems()[rand_row][rand_column];
+            if (!item->Ismine())
+            {
+                item->setMine();
+                m_c--;
+                scene->calcMinesAround(item);
+            }
+        } while(m_c > 0);
+    }
 }
 
 void MainWindow::new_game_clicked()
 {
     create_field();
+}
+
+void MainWindow::record_clicked()
+{
+    QFile file("record.dat");
+    if (file.open(QIODevice::ReadWrite))
+    {
+        QTextStream in(&file);
+
+        QString record = "";
+
+        while(!in.atEnd()) {
+            QString line = in.readLine();
+            QStringList fields = line.split(",");
+            if((fields.at(0) == QString::number(Scene::rows)) && (fields.at(1) == QString::number(Scene::columns)) && (fields.at(2) == QString::number(Scene::mines)))
+            {
+                record = fields.at(3);
+            }
+        }
+        QMessageBox msgBox;
+        msgBox.setWindowIcon(QIcon(":/resources/logo.png"));
+        msgBox.setWindowTitle(tr("Рекорд"));
+        msgBox.setText(tr("Рекорд для данных настроек: ") + QString::number(record.toInt()) + tr(" очков"));
+        msgBox.exec();
+        file.close();
+    }
 }
 
 void MainWindow::options_clicked()
@@ -184,4 +224,21 @@ void MainWindow::start_clicked()
     timer->setVisible(true);
     scene->setGameOver(false);
     m_timer.start();
+}
+void MainWindow::getDeleteRow(int row)
+{
+    QPixmap pxmp = QPixmap(":/resources/notopen.png");
+    int w = pxmp.width();
+    int h = pxmp.height();
+    int r = Scene::rows;
+    int c = Scene::columns;
+    r_offset += row;
+
+    for (int i=hei - 1; i>=0; i--)
+    {
+        for (int j=0; j<c; j++)
+        {
+            scene->getAllItems()[i][j]->setPos(j*w,(i - (hei - r) + r_offset)*h);
+        }
+    }
 }

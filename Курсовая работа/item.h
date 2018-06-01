@@ -12,11 +12,10 @@ public:
     friend class Scene;
     Item(QGraphicsItem * parent = 0)
         :QGraphicsPixmapItem(parent),isMine(0),mineAround(0),
-          Leftclicked(false),Rightclicked(0),LeftRightC(false)
+          Leftclicked(false),Rightclicked(0)
     {
 
     }
-
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void setImage(Item * item);
@@ -25,6 +24,7 @@ public:
         row = r;
         col =c;
     }
+
     void setMine()
     {
         isMine = true;
@@ -33,7 +33,10 @@ public:
     {
         return isMine;
     }
+
     static int mines_found;
+    static int score;
+
 private:
     int row;
     int col;
@@ -41,8 +44,6 @@ private:
     int mineAround;
     bool Leftclicked;
     int Rightclicked;
-    QTime LastRightcTime;
-    bool LeftRightC;
     int f_ma;
 };
 #endif // ITEM_H

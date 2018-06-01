@@ -86,19 +86,21 @@ public:
         slider_row->setObjectName(QStringLiteral("slider_row"));
         slider_row->setGeometry(QRect(210, 30, 171, 21));
         slider_row->setMinimum(9);
-        slider_row->setMaximum(20);
+        slider_row->setMaximum(19);
+        slider_row->setValue(10);
         slider_row->setOrientation(Qt::Horizontal);
         slider_col = new QSlider(Select_Option);
         slider_col->setObjectName(QStringLiteral("slider_col"));
         slider_col->setGeometry(QRect(210, 68, 171, 21));
         slider_col->setMinimum(9);
-        slider_col->setMaximum(20);
+        slider_col->setMaximum(19);
+        slider_col->setValue(10);
         slider_col->setOrientation(Qt::Horizontal);
         slider_mine = new QSlider(Select_Option);
         slider_mine->setObjectName(QStringLiteral("slider_mine"));
         slider_mine->setGeometry(QRect(210, 110, 171, 21));
         slider_mine->setMinimum(1);
-        slider_mine->setValue(10);
+        slider_mine->setValue(8);
         slider_mine->setOrientation(Qt::Horizontal);
         slider_mine->setInvertedControls(false);
         row = new QLineEdit(Select_Option);
@@ -133,7 +135,7 @@ public:
         lineEdit_row->setText(QApplication::translate("Select_Option", "\320\232\320\276\320\273\320\270\321\207\320\265\321\201\321\202\320\262\320\276 \321\201\321\202\321\200\320\276\320\272", Q_NULLPTR));
         lineEdit_row->setPlaceholderText(QString());
         lineEdit_col->setText(QApplication::translate("Select_Option", "\320\232\320\276\320\273\320\270\321\207\320\265\321\201\321\202\320\262\320\276 \321\201\321\202\320\276\320\273\320\261\321\206\320\276\320\262", Q_NULLPTR));
-        lineEdit_mine->setText(QApplication::translate("Select_Option", "\320\232\320\276\320\273\320\270\321\207\320\265\321\201\321\202\320\262\320\276 \320\274\320\270\320\275", Q_NULLPTR));
+        lineEdit_mine->setText(QApplication::translate("Select_Option", "\320\247\320\260\321\201\321\202\320\276\321\202\320\260 \320\274\320\270\320\275", Q_NULLPTR));
         row->setText(QString());
     } // retranslateUi
 

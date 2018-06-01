@@ -3,6 +3,7 @@
 #include <QDebug>
 
 int Item::mines_found = 0;
+int Item::score = 0;
 
 void Item::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -16,7 +17,6 @@ void Item::mousePressEvent(QGraphicsSceneMouseEvent *event)
                              (event->buttons() & Qt::RightButton &&
                               event->buttons() & Qt::LeftButton)))
     {
-        LeftRightC = true;
         for (int i=0; i<8; i++)
         {
             int x = row + point[i].x();
@@ -39,7 +39,10 @@ void Item::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if (event->button() & Qt::LeftButton)
     {
         if(Rightclicked > 0 || Leftclicked)
+        {
             return;
+        }
+
         Leftclicked = true;
         setImage(this);
         if(scene->isOver())
@@ -57,17 +60,6 @@ void Item::mousePressEvent(QGraphicsSceneMouseEvent *event)
             return;
         else
         {
-            QTime curTime = QTime::currentTime();
-            if (LastRightcTime.hour() == curTime.hour() &&
-                    LastRightcTime.minute() == curTime.minute() &&
-                    LastRightcTime.second() == curTime.second())
-            {
-                int curmsec = curTime.msec();
-                int lastmsec = LastRightcTime.msec();
-                if (curmsec - lastmsec < 100)
-                    return;
-            }
-            LastRightcTime = curTime;
             if(Rightclicked == 0)
             {
                 this->setPixmap(QPixmap(":/resources/flag.png"));
@@ -107,7 +99,6 @@ void Item::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                                (event->buttons() & Qt::RightButton &&
                                 event->button() & Qt::LeftButton)))
     {
-        LeftRightC = false;
         for (int i=0; i<8; i++)
         {
             int x = row + point[i].x();

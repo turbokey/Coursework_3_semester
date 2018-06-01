@@ -7,36 +7,17 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>321</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLineEdit" name="lineEdit">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>381</width>
-     <height>251</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Здесь должны быть сведения об игре</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-   </property>
-   <property name="readOnly">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
      <x>160</x>
-     <y>270</y>
+     <y>290</y>
      <width>81</width>
      <height>23</height>
     </rect>
@@ -48,6 +29,29 @@
    </property>
    <property name="text">
     <string>Понятно</string>
+   </property>
+  </widget>
+  <widget class="QPlainTextEdit" name="plainTextEdit">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>381</width>
+     <height>271</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+   <property name="plainText">
+    <string>Игровое поле состоит из ячеек, под некоторыми из которых расположены мины. Используя ЛКМ, игрок может открыть ячейку, если считает, что под ней нет мины. Если под открытой ячейкой нет мины, то в ней отображается число, показывающее, сколько ячеек, соседствующих с только что открытой, «заминировано»; используя эти числа, игрок пытается рассчитать расположение мин. Если игрок считает, что под ячейкой находится мина, он должен использовать ПКМ, чтобы пометить заминированную ячейку.
+Если игрок полность открывает все незаменированные ячейки и помечает флагами заминированные ячейки как минимум двух нижних строк, то они исчезают, а всё поле опускается вниз. Сверху появляется новая ещё неоткрытая часть игрового поля. Каждая опустившаяся строка игрового поля даёт игроку 10 очков.
+Суть игры состоит в том, чтобы получить как можно больше очков за отведённое время, не открыв при этом ячейку с миной.</string>
    </property>
   </widget>
  </widget>

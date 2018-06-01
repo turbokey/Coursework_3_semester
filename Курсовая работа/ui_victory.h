@@ -37,14 +37,14 @@ public:
         if (Victory->objectName().isEmpty())
             Victory->setObjectName(QStringLiteral("Victory"));
         Victory->setWindowModality(Qt::NonModal);
-        Victory->resize(403, 237);
+        Victory->resize(412, 237);
         Victory->setAutoFillBackground(false);
         face = new QLabel(Victory);
         face->setObjectName(QStringLiteral("face"));
         face->setGeometry(QRect(10, 50, 150, 150));
         mines_label = new QLabel(Victory);
         mines_label->setObjectName(QStringLiteral("mines_label"));
-        mines_label->setGeometry(QRect(180, 100, 161, 21));
+        mines_label->setGeometry(QRect(180, 110, 161, 21));
         QFont font;
         font.setPointSize(14);
         mines_label->setFont(font);
@@ -56,11 +56,11 @@ public:
         continueButton->setFont(font1);
         score_label = new QLabel(Victory);
         score_label->setObjectName(QStringLiteral("score_label"));
-        score_label->setGeometry(QRect(180, 140, 161, 21));
+        score_label->setGeometry(QRect(180, 150, 161, 21));
         score_label->setFont(font);
         new_record_label = new QLabel(Victory);
         new_record_label->setObjectName(QStringLiteral("new_record_label"));
-        new_record_label->setGeometry(QRect(200, 60, 181, 21));
+        new_record_label->setGeometry(QRect(200, 70, 181, 21));
         QFont font2;
         font2.setPointSize(14);
         font2.setBold(true);
@@ -69,11 +69,11 @@ public:
         new_record_label->setAlignment(Qt::AlignCenter);
         mines = new QLabel(Victory);
         mines->setObjectName(QStringLiteral("mines"));
-        mines->setGeometry(QRect(350, 100, 41, 21));
+        mines->setGeometry(QRect(350, 110, 51, 21));
         mines->setFont(font);
         score = new QLabel(Victory);
         score->setObjectName(QStringLiteral("score"));
-        score->setGeometry(QRect(350, 140, 41, 21));
+        score->setGeometry(QRect(350, 150, 51, 21));
         score->setFont(font);
         victory_or_lose = new QLabel(Victory);
         victory_or_lose->setObjectName(QStringLiteral("victory_or_lose"));

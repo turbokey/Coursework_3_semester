@@ -8,6 +8,7 @@ Select_Option::Select_Option(QWidget *parent) :
 {
 
     ui->setupUi(this);
+    setWindowIcon(QIcon(":/resources/logo.png"));
     setWindowTitle(tr("Настройки"));
     setWindowFlags(Qt::Dialog|Qt::MSWindowsFixedSizeDialogHint);
 

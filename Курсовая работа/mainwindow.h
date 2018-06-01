@@ -6,6 +6,7 @@
 #include "losewindia.h"
 #include "scene.h"
 #include "select_option.h"
+#include "victory.h"
 #include <QLabel>
 #include <QPushButton>
 
@@ -31,12 +32,14 @@ private:
     int timeR = 60;
 public slots:
     void new_game_clicked();
+    void record_clicked();
     void options_clicked();
     void about_clicked();
     void getInformation(int rows,int columns,int mines);
 private slots:
     void timerTick();
     void start_clicked();
+    void getDeleteRow(int rows);
 };
 
 #endif // MAINWINDOW_H
